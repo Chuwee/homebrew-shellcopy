@@ -3,8 +3,8 @@
 class Shellcopy < Formula
   desc "Copy part of your terminal's output with the keyboard"
   homepage "https://github.com/Chuwee/shellcopy"
-  url "https://github.com/Chuwee/shellcopy/archive/refs/tags/v0.1.2.tar.gz"
-  sha256 "94b6450035a31c567e65c658639edd72d279614d2b4b780a727f887edac20941"
+  url "https://github.com/Chuwee/shellcopy/archive/refs/tags/v0.1.3.tar.gz"
+  sha256 "7e37ab3baf4194ee2a30209df9618756cf5ff8bb24516cf179b964e76f3f01c0"
   license "MIT"
 
   depends_on "python@3.13"
@@ -37,20 +37,18 @@ class Shellcopy < Formula
 
   def caveats
     <<~EOS
-      `cy` works from any shell as is: `cmd | cy`. To let plain `cy` pick from what the terminal shows
-      (scrollback included), add the hook to your shell's rc file:
-        zsh  (~/.zshrc):   #{Utils.safe_popen_read(opt_bin/"shellcopy", "init", "--rc-line", "zsh").strip}
-        bash (~/.bashrc):  #{Utils.safe_popen_read(opt_bin/"shellcopy", "init", "--rc-line", "bash").strip}
-        fish (~/.config/fish/conf.d/shellcopy.fish):
-          #{Utils.safe_popen_read(opt_bin/"shellcopy", "init", "--rc-line", "fish").strip}
-      Recording the terminal needs util-linux `script`, so on macOS plain `cy` reads tmux's screen or
-      offers to re-run your last command instead.
+      To let plain `cy` pick from what the terminal shows (scrollback included), add the shell hook
+      to your rc files once:
+        shellcopy setup
+      `cmd | cy` works without it. Recording the terminal needs util-linux `script`, so on macOS
+      plain `cy` reads tmux's screen or offers to re-run your last command instead.
     EOS
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/shellcopy --version")
     assert_match "shellcopy()", shell_output("#{bin}/shellcopy init bash")
+    assert_match "setup", shell_output("#{bin}/shellcopy setup --help")
     assert_match "pyte", shell_output("#{Formula["python@3.13"].opt_bin}/python3.13 -c 'import sys; " \
                                       "sys.path.insert(0, \"#{libexec}/vendor\"); import pyte; print(pyte.__name__)'")
   end
