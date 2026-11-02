@@ -3,8 +3,8 @@
 class Shellcopy < Formula
   desc "Copy part of your terminal's output with the keyboard"
   homepage "https://github.com/Chuwee/shellcopy"
-  url "https://github.com/Chuwee/shellcopy/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "86a46a6a794955b842c1d21e3fdffeb0f06384db40f602d9bd5ad990781d76de"
+  url "https://github.com/Chuwee/shellcopy/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "fd6e5d57e79cf556da1ae470323dd91e0e2f891f69b46a188ba38709d0f080ee"
   license "MIT"
 
   depends_on "python@3.13"
@@ -32,18 +32,18 @@ class Shellcopy < Formula
       #!/bin/sh
       SHELLCOPY_EXE="#{opt_bin}/shellcopy" exec "#{python}" "#{opt_libexec}/shellcopy.py" "$@"
     SH
-    bin.install_symlink "shellcopy" => "bcp"
+    bin.install_symlink "shellcopy" => "shcp"
   end
 
   def caveats
     <<~EOS
-      `bcp` works from any shell as is: `cmd | bcp`. To let plain `bcp` pick from what the terminal shows
+      `shcp` works from any shell as is: `cmd | shcp`. To let plain `shcp` pick from what the terminal shows
       (scrollback included), add the hook to your shell's rc file:
         zsh  (~/.zshrc):   #{Utils.safe_popen_read(opt_bin/"shellcopy", "init", "--rc-line", "zsh").strip}
         bash (~/.bashrc):  #{Utils.safe_popen_read(opt_bin/"shellcopy", "init", "--rc-line", "bash").strip}
         fish (~/.config/fish/conf.d/shellcopy.fish):
           #{Utils.safe_popen_read(opt_bin/"shellcopy", "init", "--rc-line", "fish").strip}
-      Recording the terminal needs util-linux `script`, so on macOS plain `bcp` reads tmux's screen or
+      Recording the terminal needs util-linux `script`, so on macOS plain `shcp` reads tmux's screen or
       offers to re-run your last command instead.
     EOS
   end
